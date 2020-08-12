@@ -1,8 +1,12 @@
-
-import datetime, time
+#default
 import requests 
+import shutil
 import os
+import threading
 #PySide2
+from PySide2.QtWidgets import QLabel
+from PySide2.QtGui import QPixmap
+from PySide2.QtCore import QByteArray, QTimer
 
 
 
@@ -19,38 +23,58 @@ class timelapse(object):
     name = ""
     #how many images were already taken
     pictures_taken = 0
+    #timer to get an image every x-seconds
+    timer = None
+
+    label_video_stream     = None
+    label_last_image_taken = None
 
 
-    def __init__(self, url : str, path : str, name : str, capture_timeframe : int):
+    def __init__(self, url : str, path : str, name : str, capture_timeframe : int,
+                label_video_stream : QLabel, label_last_image_taken : QLabel):
 
-        self.url = url
+        self.url  = url
         self.path = path
         self.name = name
-        self.capture_timeframe = capture_timeframe
+        self.capture_timeframe      = capture_timeframe
+        self.label_video_stream     = label_video_stream
+        self.label_last_image_taken = label_last_image_taken
 
+        self.create_timelapse_folder()
 
-    def download_image(self):
+        #start taking images
+        self.timer = QTimer()
+        self.timer.setInterval(self.capture_timeframe * 1000)
+        self.timer.timeout.connect(self.take_image)
+        self.timer.start()
+
+    def create_timelapse_folder(self):
         """
-        Downloads an image from the given self.url and saves it as self.name + self.pictures_taken to self.path.
+        Creates the folder in which the video and images of the timelapse should be stored.
         """
 
-        _name =  "test" + "_" + str(self.pictures_taken) + ".jpg"
+        os.mkdir(os.path.join(self.path, self.name))
+        os.mkdir(os.path.join(self.path, self.name, "images"))
 
+    def take_image(self):
+        """
+        Downloads the current image from the given URL.
+        Displays it in the "last_image_taken"-label and saves it to the given path.
+        """
+        #download image from the given url 
         img = requests.get(self.url, stream=True)
+        img.raw.decode_content = True
+        label_pixmap = QPixmap()
+        label_pixmap.loadFromData(QByteArray(img.raw.data))
+        #resize image and show it in the last frame label
+        label_pixmap = label_pixmap.scaledToWidth(self.label_last_image_taken.width())
+        self.label_last_image_taken.setPixmap(label_pixmap)
+
+        #save the image
+        with open(os.path.join(self.path, self.name, "images", str(self.pictures_taken) + ".jpg"), "wb") as f:
+            shutil.copyfileobj(img.raw, f)
+
+        self.pictures_taken += 1
 
 
-        #test
-
-        label_pixmap = None
-        #url = "http://192.168.178.51/webcam/?action=snapshot"
-        #if(url == ""):
-        #    label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
-        #else:
-        #    img = requests.get(url, stream=True)
-        #    img.raw.decode_content = True
-        #    #qimg = QImage.loadFromData(img.content)
-        #    label_pixmap = QPixmap()
-        #    label_pixmap.loadFromData(QByteArray(img.raw.data))
-        #label_video_stream.setPixmap(label_pixmap)
-        #label_video_stream.setMask(label_pixmap.mask())
     
