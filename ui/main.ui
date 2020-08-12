@@ -18,7 +18,7 @@
     <item row="3" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="groupBox_video_stream">
         <property name="title">
          <string>Video Stream</string>
         </property>
@@ -37,13 +37,13 @@
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="groupBox_last_image_taken">
         <property name="title">
          <string>Last Image taken</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="label_last_image_taken">
            <property name="text">
             <string>TextLabel</string>
            </property>
@@ -60,7 +60,7 @@
     <item row="4" column="0">
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_start_stop_timelapse">
         <property name="text">
          <string>Start Timelapse</string>
         </property>
@@ -84,7 +84,7 @@
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="1">
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="lineEdit_IP_address">
         <property name="text">
          <string>http://192.168.178.51:8080/?action=snapshot</string>
         </property>
@@ -94,7 +94,7 @@
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_time_till_next_image">
         <property name="toolTip">
          <string>The time the program waits until a new timelapse image is taken (in seconds).</string>
         </property>
@@ -104,14 +104,14 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_IP_address">
         <property name="text">
          <string>IP-address:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="lineEdit_2">
+       <widget class="QLineEdit" name="lineEdit_timelapse_path">
         <property name="text">
          <string>B:\\current_resolve_projects\\pcUpgrade\\footage\\timelapses\\psu_shroud\\</string>
         </property>
@@ -121,7 +121,7 @@
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="spinBox">
+       <widget class="QSpinBox" name="spinBox_time_till_next_image">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -137,21 +137,21 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QToolButton" name="toolButton_image_path">
+       <widget class="QToolButton" name="toolButton_timelapse_path">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_timelapse_path">
         <property name="text">
          <string>timelapse path:</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="lineEdit_3">
+       <widget class="QLineEdit" name="lineEdit_name">
         <property name="text">
          <string>DaIPTimelapse</string>
         </property>
@@ -164,7 +164,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="label_name">
         <property name="text">
          <string>name:</string>
         </property>
