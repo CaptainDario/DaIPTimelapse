@@ -55,10 +55,19 @@ class ui(object):
 
     def set_icons(self):
         self.toolButton_image_path.setIcon(QIcon("img/folder_black.png"))
+        
+        label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
+        self.label_video_stream.setPixmap(label_pixmap)
+        self.label_video_stream.setMask(label_pixmap.mask())
+        
+        label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
+        self.label_last_image_taken.setPixmap(label_pixmap)
+        self.label_last_image_taken.setMask(label_pixmap.mask())
 
     def connect_ui(self):
         self.toolButton_image_path.clicked.connect(self.set_timelapse_dir)
         self.pushButton_start_stop_timelapse.clicked.connect(self.start_timelapse)
+        self.window.findChild(QPushButton, "pushButton").clicked.connect(self.preview)
 
     
     #Button functions
