@@ -1,6 +1,12 @@
+#default
+import os
+import requests
 #PySide
-from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel, QPushButton, QLineEdit, QSpinBox, QFileDialog
-from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel,\
+                                QPushButton, QLineEdit, QSpinBox, QFileDialog,\
+                                QErrorMessage
+from PySide2.QtGui import QIcon, QPixmap
+from PySide2.QtCore import QByteArray, Qt
 #custom
 import timelapse
 
