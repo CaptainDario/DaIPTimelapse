@@ -4,9 +4,9 @@ import requests
 #PySide
 from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel,\
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
-                                QErrorMessage
+                                QMessageBox
 from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtCore import QByteArray, Qt
+from PySide2.QtCore import QByteArray, Qt, QTimer
 #custom
 import timelapse
 
@@ -28,6 +28,7 @@ class ui(object):
 
     pushButton_start_stop_timelapse = None 
 
+    curren_timelapse = None
 
 
     def __init__(self, window : QMainWindow):
@@ -37,6 +38,8 @@ class ui(object):
         self.set_important_ui_elements()
         self.set_icons()
         self.connect_ui()
+
+        #refresh camera stream every x seconds
 
     def set_important_ui_elements(self):
         self.lineEdit_IP_address          = self.window.findChild(QLineEdit, "lineEdit_IP_address")
@@ -80,18 +83,21 @@ class ui(object):
         """Checks if all parameter entered in the ui is valid and if so starts a timelapse.
         """
 
-        if(self.lineEdit_IP_address.text() == "" or
-            self.lineEdit_timelapse_path.text() == "" or
-            self.lineEdit_name.text() == ""):
-            msgBox = QErrorMessage()
-            msgBox.setText("Not all necessary parameters were set!")
+        #read textedits
+        IP_addr = self.lineEdit_IP_address.text()
+        path    = self.lineEdit_timelapse_path.text()
+        name    = self.lineEdit_name.text()
+
+        #check if all values are entered 
+        if(IP_addr == "" or path == "" or name == ""):
+            QMessageBox.critical(None, "Error", "Not all necessary parameters were set!")
+        elif(os.path.exists(os.path.join(path, name))):
+            msgBox = QMessageBox.critical(None, "Error", ("In the given path a folder called: '%s' already exists!" % name))
         else:
-            timelapse.timelapse(self.lineEdit_IP_address.text(),
-                                self.lineEdit_timelapse_path.text(),
-                                self.lineEdit_name.text(),
-                                self.spinBox_time_till_next_image.value(),
-                                self.label_video_stream,
-                                self.label_last_image_taken)
+            self.current_timelapse = timelapse.timelapse(IP_addr, path, name,
+                                                        self.spinBox_time_till_next_image.value(),
+                                                        self.label_video_stream,
+                                                        self.label_last_image_taken)
 
 
     def preview(self):
@@ -103,5 +109,3 @@ class ui(object):
         label_pixmap = QPixmap()
         label_pixmap.loadFromData(QByteArray(img.raw.data))
         self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
-
-        #self.label_video_stream.setMask(label_pixmap.mask())
