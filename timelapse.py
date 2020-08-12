@@ -63,18 +63,19 @@ class timelapse(object):
         """
         #download image from the given url 
         img = requests.get(self.url, stream=True)
-        img.raw.decode_content = True
-        label_pixmap = QPixmap()
-        label_pixmap.loadFromData(QByteArray(img.raw.data))
-        #resize image and show it in the last frame label
-        label_pixmap = label_pixmap.scaledToWidth(self.label_last_image_taken.width())
-        self.label_last_image_taken.setPixmap(label_pixmap)
+        if(img.status_code == 200):
+            img.raw.decode_content = True
+            label_pixmap = QPixmap()
+            label_pixmap.loadFromData(QByteArray(img.raw.data))
+            #resize image and show it in the last frame label
+            label_pixmap = label_pixmap.scaledToWidth(self.label_last_image_taken.width())
+            self.label_last_image_taken.setPixmap(label_pixmap)
 
-        #save the image
-        #with open(os.path.join(self.path, self.name, "images", str(self.pictures_taken) + ".jpg"), "wb") as f:
-        #    shutil.copyfileobj(img.raw, f)
+            #save the image
+            with open(os.path.join(self.path, self.name, "images", str(self.pictures_taken) + ".jpg"), "wb") as f:
+                f.write(img.raw.data)
 
-        self.pictures_taken += 1
+            self.pictures_taken += 1
 
 
     
