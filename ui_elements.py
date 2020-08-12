@@ -28,6 +28,8 @@ class ui(object):
 
     pushButton_start_stop_timelapse = None 
 
+    refresh_view_timer = None
+
     curren_timelapse = None
 
 
@@ -40,6 +42,10 @@ class ui(object):
         self.connect_ui()
 
         #refresh camera stream every x seconds
+        self.refresh_view_timer = QTimer()
+        self.refresh_view_timer.setInterval(500)
+        self.refresh_view_timer.timeout.connect(self.refresh_preview)
+        self.refresh_view_timer.start()
 
     def set_important_ui_elements(self):
         self.lineEdit_IP_address          = self.window.findChild(QLineEdit, "lineEdit_IP_address")
@@ -70,7 +76,9 @@ class ui(object):
     def connect_ui(self):
         self.toolButton_image_path.clicked.connect(self.set_timelapse_dir)
         self.pushButton_start_stop_timelapse.clicked.connect(self.start_timelapse)
-        self.window.findChild(QPushButton, "pushButton").clicked.connect(self.preview)
+        self.window.findChild(QPushButton, "pushButton").clicked.connect(self.refresh_preview)
+
+
 
     
     #Button functions
@@ -100,12 +108,15 @@ class ui(object):
                                                         self.label_last_image_taken)
 
 
-    def preview(self):
+    def refresh_preview(self):
+        """Downloads the current image from the given URL and previews it in the label.
+        """
 
         w, h = self.label_video_stream.width(), self.label_video_stream.height()
 
         img = requests.get(self.lineEdit_IP_address.text(), stream=True)
-        img.raw.decode_content = True
-        label_pixmap = QPixmap()
-        label_pixmap.loadFromData(QByteArray(img.raw.data))
-        self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
+        if(img.status_code == 200):
+            img.raw.decode_content = True
+            label_pixmap = QPixmap()
+            label_pixmap.loadFromData(QByteArray(img.raw.data))
+            self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
