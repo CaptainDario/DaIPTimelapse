@@ -14,12 +14,6 @@ from PySide2.QtGui import QPixmap, QImage
 
 
 
-#the time until the next frame will be captured
-capture_timeframe = 0
-#the url of the camera stream where the still should be extracted from
-url = ""
-#the path were the image should be saved at
-path = ""
 
 
 def download_image(_url : str, _path : str = "", _name : str = "", _include_tick_nr : str = ""):
@@ -72,8 +66,7 @@ if __name__ == "__main__":
     label_video_stream = window.findChild(QLabel, "label_video_stream")
 
     label_pixmap = None
-    url = "http://192.168.178.51/webcam/?action=stream"
-    #url = "https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569__340.jpg"
+    url = "http://192.168.178.51/webcam/?action=snapshot"
     if(url == ""):
         label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
     else:
