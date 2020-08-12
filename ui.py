@@ -12,21 +12,6 @@ ui = None
 
 
 
-def start_timelapse():
-
-    if(os.path.exists(image_location)):
-        project_name = "project_name"
-        os.chdir(image_location)
-        # check if there is no folder with the given name
-        if(os.path.exists(os.path.join(image_location, project_name))):
-            os.mkdir(project_name)
-            os.chdir(project_name)
-            os.mkdir(project_name + "images")
-        else:
-            print("A folder with the given project name already exists!")
-    else:
-        print("path does not exists")
-
 
 def load_ui_file(path : str):
     """Loads the main ".ui"-file from the "ui"-folder and returns the QMainWindow from it.
