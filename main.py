@@ -1,9 +1,8 @@
 #standard
-import sched
 import os, sys
-import requests
 #custom
 import ui
+import about
 #PySide2
 from PySide2.QtWidgets import QApplication, QMainWindow
 
@@ -13,8 +12,8 @@ def main():
 
     #load the ui from file
     window = ui.load_ui_file(os.path.join("ui", "main.ui")) 
+    window.setWindowTitle(about.name + " " + about.version)
     window.show()
-
 
     sys.exit(app.exec_())
 
