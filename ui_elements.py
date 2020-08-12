@@ -77,8 +77,31 @@ class ui(object):
         self.lineEdit_timelapse_path.setText(file_path)
 
     def start_timelapse(self):
-        timelapse.timelapse(self.lineEdit_IP_address.text(),
-                            self.lineEdit_timelapse_path.text(),
-                            self.lineEdit_name.text(),
-                            self.spinBox_time_till_next_image.value())
+        """Checks if all parameter entered in the ui is valid and if so starts a timelapse.
+        """
 
+        if(self.lineEdit_IP_address.text() == "" or
+            self.lineEdit_timelapse_path.text() == "" or
+            self.lineEdit_name.text() == ""):
+            msgBox = QErrorMessage()
+            msgBox.setText("Not all necessary parameters were set!")
+        else:
+            timelapse.timelapse(self.lineEdit_IP_address.text(),
+                                self.lineEdit_timelapse_path.text(),
+                                self.lineEdit_name.text(),
+                                self.spinBox_time_till_next_image.value(),
+                                self.label_video_stream,
+                                self.label_last_image_taken)
+
+
+    def preview(self):
+
+        w, h = self.label_video_stream.width(), self.label_video_stream.height()
+
+        img = requests.get(self.lineEdit_IP_address.text(), stream=True)
+        img.raw.decode_content = True
+        label_pixmap = QPixmap()
+        label_pixmap.loadFromData(QByteArray(img.raw.data))
+        self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
+
+        #self.label_video_stream.setMask(label_pixmap.mask())
