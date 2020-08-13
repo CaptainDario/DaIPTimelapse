@@ -72,7 +72,7 @@ class timelapse(object):
             self.label_last_image_taken.setPixmap(label_pixmap)
 
             #save the image
-            with open(os.path.join(self.path, self.name, "images", str(self.pictures_taken) + ".jpg"), "wb") as f:
+            with open(os.path.join(self.path, self.name, "images", self.name + str(self.pictures_taken) + ".jpg"), "wb") as f:
                 f.write(img.raw.data)
 
             self.pictures_taken += 1
