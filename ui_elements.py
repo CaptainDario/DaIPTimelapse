@@ -112,11 +112,21 @@ class ui(object):
         """Downloads the current image from the given URL and previews it in the label.
         """
 
-        w, h = self.label_video_stream.width(), self.label_video_stream.height()
+            w, h = self.label_video_stream.width(), self.label_video_stream.height()
 
-        img = requests.get(self.lineEdit_IP_address.text(), stream=True)
-        if(img.status_code == 200):
-            img.raw.decode_content = True
-            label_pixmap = QPixmap()
-            label_pixmap.loadFromData(QByteArray(img.raw.data))
-            self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
+            w, h = self.label_video_stream.width(), self.label_video_stream.height()
+            img = requests.get(self.lineEdit_IP_address.text(), stream=True)
+
+            if(img.status_code == 200):
+                img.raw.decode_content = True
+                label_pixmap = QPixmap()
+                label_pixmap.loadFromData(QByteArray(img.raw.data))
+                if(label_pixmap is not None):
+                    self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
+                else:
+                    print("An unexpected error appeared during image downloading/conversion!")
+                    print("Please check that the IP-camera is returning a valid image and the URL is set correctly.")
+                    #error during image download/conversion -> show placeholder
+                    label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
+                    self.label_video_stream.setPixmap(label_pixmap)
+                    self.label_video_stream.setMask(label_pixmap.mask())
