@@ -101,6 +101,8 @@ class ui(object):
             QMessageBox.critical(None, "Error", "Not all necessary parameters were set!")
         elif(os.path.exists(os.path.join(path, name))):
             msgBox = QMessageBox.critical(None, "Error", ("In the given path a folder called: '%s' already exists!" % name))
+        elif(not os.path.isdir(path)):
+            msgBox = QMessageBox.critical(None, "Error", ("The given path does not exists!"))
         else:
             self.current_timelapse = timelapse.timelapse(IP_addr, path, name,
                                                         self.spinBox_time_till_next_image.value(),
