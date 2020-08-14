@@ -52,9 +52,10 @@ class timelapse(object):
         """
         Creates the folder in which the video and images of the timelapse should be stored.
         """
-
+        
         os.mkdir(os.path.join(self.path, self.name))
         os.mkdir(os.path.join(self.path, self.name, "images"))
+
 
     def take_image(self):
         """
@@ -72,7 +73,7 @@ class timelapse(object):
             self.label_last_image_taken.setPixmap(label_pixmap)
 
             #save the image
-            with open(os.path.join(self.path, self.name, "images", self.name + str(self.pictures_taken) + ".jpg"), "wb") as f:
+            with open(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), "wb") as f:
                 f.write(img.raw.data)
 
             self.pictures_taken += 1
