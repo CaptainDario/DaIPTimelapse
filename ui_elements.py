@@ -1,6 +1,7 @@
 #default
 import os
 import requests
+import re
 #PySide
 from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel,\
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
@@ -10,6 +11,13 @@ from PySide2.QtCore import QByteArray, Qt, QTimer
 #custom
 import timelapse
 
+url_regex = re.compile(
+        r'^(?:http|ftp)s?://' # http:// or https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+        r'localhost|' #localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+        r'(?::\d+)?' # optional port
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE) 
 
 
 class ui(object):
@@ -114,7 +122,8 @@ class ui(object):
         """Downloads the current image from the given URL and previews it in the label.
         """
 
-            w, h = self.label_video_stream.width(), self.label_video_stream.height()
+        print(re.match(url_regex, self.lineEdit_IP_address.text()) is not None)
+        if(re.match(url_regex, self.lineEdit_IP_address.text()) is not None):
 
             w, h = self.label_video_stream.width(), self.label_video_stream.height()
             img = requests.get(self.lineEdit_IP_address.text(), stream=True)
