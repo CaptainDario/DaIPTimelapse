@@ -4,9 +4,12 @@ import shutil
 import os
 import threading
 #PySide2
-from PySide2.QtWidgets import QLabel
+from PySide2.QtWidgets import QLabel, QMessageBox
 from PySide2.QtGui import QPixmap
 from PySide2.QtCore import QByteArray, QTimer
+#custom
+import IO
+import network
 
 
 
@@ -24,29 +27,52 @@ class timelapse(object):
     #how many images were already taken
     pictures_taken = 0
     #timer to get an image every x-seconds
-    timer = None
+    timer_take_image = None
+    #timer to increase the progressbar every second
+    timer_progressbar = None
 
-    label_video_stream     = None
-    label_last_image_taken = None
 
-
-    def __init__(self, url : str, path : str, name : str, capture_timeframe : int,
-                label_video_stream : QLabel, label_last_image_taken : QLabel):
+    def __init__(self, url : str, path : str, name : str, capture_timeframe : int):
 
         self.url  = url
         self.path = path
         self.name = name
         self.capture_timeframe      = capture_timeframe
-        self.label_video_stream     = label_video_stream
-        self.label_last_image_taken = label_last_image_taken
+        
+        #open ui window
+        self.window_timelapse = IO.load_ui_file(os.path.join("ui", "timelapse.ui")) 
+        self.window_timelapse.setWindowTitle(self.name)
+        self.window_timelapse.show()
+        #set the values to the ones the user has entered
+        self.window_timelapse.label_ip.setText("IP-address: " + str(self.url))
+        self.window_timelapse.label_timelapsePath.setText("timelapse path: " + str(self.path))
+        self.window_timelapse.label_timelapseName.setText("name: " + str(self.name))
+        self.window_timelapse.label_spf.setText("spf: " + str(self.capture_timeframe))
 
+        #create the folder where the images of the timelapse wil be saved
         self.create_timelapse_folder()
 
+        #setup the progressbar which indicates when a new image will be taken
+        self.timer_current_value = 0
+        self.window_timelapse.progressBar_timeTillNextImage.setRange(0, self.capture_timeframe * 1000)
+        self.timer_progressbar = QTimer()
+        self.timer_progressbar.setInterval(1000)
+        self.timer_progressbar.timeout.connect(self.increase_progressBar)
+        self.timer_progressbar.start()
+
         #start taking images
-        self.timer = QTimer()
-        self.timer.setInterval(self.capture_timeframe * 1000)
-        self.timer.timeout.connect(self.take_image)
-        self.timer.start()
+        self.timer_take_image = QTimer()
+        self.timer_take_image.setInterval(self.capture_timeframe * 1000)
+        self.timer_take_image.timeout.connect(self.take_image)
+        self.timer_take_image.start()
+
+    def connect_ui(self):
+        '''
+        Connect the buttons of the timelapse-ui with their functions.
+        '''
+        #FINISH BUTTON
+        #REMOVE TIMELAPSE FROM TIMELAPSE ARRAY WHEN CLOSED
+        pass
 
     def create_timelapse_folder(self):
         """
@@ -56,27 +82,33 @@ class timelapse(object):
         os.mkdir(os.path.join(self.path, self.name))
         os.mkdir(os.path.join(self.path, self.name, "images"))
 
+    def increase_progressBar(self):
+        '''
+        '''
+
+        self.timer_current_value += 1000
+        self.window_timelapse.progressBar_timeTillNextImage.setValue(self.timer_current_value)
+
 
     def take_image(self):
         """
         Downloads the current image from the given URL.
-        Displays it in the "last_image_taken"-label and saves it to the given path.
+        Displays it in the "label_lastImageTaken"-label and saves it to the given path.
+
+        TODO:
+            Save the image to file
         """
+
         #download image from the given url 
-        img = requests.get(self.url, stream=True)
-        if(img.status_code == 200):
-            img.raw.decode_content = True
-            label_pixmap = QPixmap()
-            label_pixmap.loadFromData(QByteArray(img.raw.data))
-            #resize image and show it in the last frame label
-            label_pixmap = label_pixmap.scaledToWidth(self.label_last_image_taken.width())
-            self.label_last_image_taken.setPixmap(label_pixmap)
+        valid = network.check_camera_ip(self.url, self.window_timelapse.label_lastImageTaken)
+        if(not valid):
+            QMessageBox.critical(None, "Error", ("An unexpected error appeared during image downloading/conversion! \n" + \
+                                        "Please check that the IP-camera is returning a valid image and the URL is set correctly."))
 
-            #save the image
-            with open(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), "wb") as f:
-                f.write(img.raw.data)
 
-            self.pictures_taken += 1
+        #reset the timer until the next image will be taken
+        self.window_timelapse.progressBar_timeTillNextImage.reset()
+        self.timer_current_value = 0
 
 
     

@@ -1,6 +1,5 @@
 #default
 import os
-import requests
 import re
 #PySide
 from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel,\
@@ -10,17 +9,12 @@ from PySide2.QtGui import QIcon, QPixmap
 from PySide2.QtCore import QByteArray, Qt, QTimer
 #custom
 import timelapse
-
-url_regex = re.compile(
-        r'^(?:http|ftp)s?://' # http:// or https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
-        r'localhost|' #localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
-        r'(?::\d+)?' # optional port
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE) 
+import network
+import IO
 
 
-class ui(object):
+
+class main_ui(object):
     
     lineEdit_IP_address             = None
 
@@ -113,33 +107,20 @@ class ui(object):
         elif(not os.path.isdir(path)):
             msgBox = QMessageBox.critical(None, "Error", ("The given path does not exists!"))
         else:
-            self.current_timelapse = timelapse.timelapse(IP_addr, path, name,
-                                                        self.spinBox_time_till_next_image.value(),
-                                                        self.label_video_stream,
-                                                        self.label_last_image_taken)
+            self.current_timelapses.append(timelapse.timelapse(IP_addr, path, name,
+                                            self.spinBox_time_till_next_image.value()))
 
+    def show_ip_preview(self):
+        '''
+        Opens a new window and shows a preview of the camera stream.
+        '''
+        
+        self.window_stream_preview = IO.load_ui_file(os.path.join("ui", "stream_preview.ui")) 
+        self.window_stream_preview.show()
+        valid = network.check_camera_ip(self.lineEdit_IP_address.text(),
+                                self.window_stream_preview.label_video_stream_preview)
+        if(not valid):
+            self.window_stream_preview.close()
+            QMessageBox.critical(None, "Error", ("An unexpected error appeared during image downloading/conversion! \n" + \
+                                        "Please check that the IP-camera is returning a valid image and the URL is set correctly."))
 
-    def refresh_preview(self):
-        """
-        Downloads the current image from the given URL and previews it in the label.
-        """
-
-        print(re.match(url_regex, self.lineEdit_IP_address.text()) is not None)
-        if(re.match(url_regex, self.lineEdit_IP_address.text()) is not None):
-
-            w, h = self.label_video_stream.width(), self.label_video_stream.height()
-            img = requests.get(self.lineEdit_IP_address.text(), stream=True)
-
-            if(img.status_code == 200):
-                img.raw.decode_content = True
-                label_pixmap = QPixmap()
-                label_pixmap.loadFromData(QByteArray(img.raw.data))
-                if(label_pixmap is not None):
-                    self.label_video_stream.setPixmap(label_pixmap.scaledToWidth(w))
-                else:
-                    print("An unexpected error appeared during image downloading/conversion!")
-                    print("Please check that the IP-camera is returning a valid image and the URL is set correctly.")
-                    #error during image download/conversion -> show placeholder
-                    label_pixmap = QPixmap(os.path.join("img", "placeholder.png"))
-                    self.label_video_stream.setPixmap(label_pixmap)
-                    self.label_video_stream.setMask(label_pixmap.mask())
