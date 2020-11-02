@@ -53,12 +53,16 @@ class timelapse(object):
         self.create_timelapse_folder()
 
         #setup the progressbar which indicates when a new image will be taken
-        self.timer_current_value = 0
-        self.window_timelapse.progressBar_timeTillNextImage.setRange(0, self.capture_timeframe * 1000)
+        self.timer_current_value = self.capture_timeframe
+        self.window_timelapse.progressBar_timeTillNextImage.setRange(0, self.capture_timeframe)
+        #self.window_timelapse.progressBar_timeTillNextImage.setText("Progress until next image")
         self.timer_progressbar = QTimer()
         self.timer_progressbar.setInterval(1000)
         self.timer_progressbar.timeout.connect(self.increase_progressBar)
         self.timer_progressbar.start()
+
+        #take a first image
+        self.take_image()
 
         #start taking images
         self.timer_take_image = QTimer()
@@ -86,8 +90,9 @@ class timelapse(object):
         '''
         '''
 
-        self.timer_current_value += 1000
+        self.timer_current_value -= 1
         self.window_timelapse.progressBar_timeTillNextImage.setValue(self.timer_current_value)
+        self.window_timelapse.progressBar_timeTillNextImage.setFormat("Next image will in %v s")
 
 
     def take_image(self):
@@ -107,8 +112,8 @@ class timelapse(object):
 
 
         #reset the timer until the next image will be taken
-        self.window_timelapse.progressBar_timeTillNextImage.reset()
-        self.timer_current_value = 0
+        self.timer_current_value = self.capture_timeframe
+        self.window_timelapse.progressBar_timeTillNextImage.setValue(self.timer_current_value)
 
-
+        self.window_timelapse.progressBar_timeTillNextImage.setFormat("Next image in %v s")
     
