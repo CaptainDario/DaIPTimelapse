@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>865</width>
-    <height>670</height>
+    <width>858</width>
+    <height>295</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,90 +16,14 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="3" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <item>
-       <widget class="QGroupBox" name="groupBox_video_stream">
-        <property name="font">
-         <font>
-          <family>Alef</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="title">
-         <string>Video Stream</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_video_stream">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::NoFrame</enum>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-           <property name="scaledContents">
-            <bool>false</bool>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="groupBox_last_image_taken">
-        <property name="font">
-         <font>
-          <family>Alef</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="title">
-         <string>Last Image taken</string>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_3">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_last_image_taken">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="0">
      <layout class="QGridLayout" name="gridLayout_4">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
       <item row="0" column="2">
        <widget class="QPushButton" name="pushButton_start_stop_timelapse">
         <property name="text">
          <string>Start Timelapse</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Preview</string>
         </property>
        </widget>
       </item>
@@ -118,12 +42,12 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="0">
+    <item row="0" column="0" rowspan="3">
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="1">
        <widget class="QLineEdit" name="lineEdit_IP_address">
         <property name="text">
-         <string>http://192.168.178.52:8080/?action=snapshot</string>
+         <string>http://192.168.178.60:8080/?action=snapshot</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -133,10 +57,10 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_time_till_next_image">
         <property name="toolTip">
-         <string>The time the program waits until a new timelapse image is taken (in seconds).</string>
+         <string>The time the program waits until a new image is taken (in seconds).</string>
         </property>
         <property name="text">
-         <string>time till next image:</string>
+         <string>spf</string>
         </property>
        </widget>
       </item>
@@ -150,7 +74,7 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="lineEdit_timelapse_path">
         <property name="text">
-         <string>S:\IP_timelapses</string>
+         <string>D:\IP_timelapses</string>
         </property>
         <property name="clearButtonEnabled">
          <bool>true</bool>
@@ -207,6 +131,13 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pushButton_preview">
+        <property name="text">
+         <string>Preview</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -216,8 +147,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>865</width>
-     <height>21</height>
+     <width>858</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>
