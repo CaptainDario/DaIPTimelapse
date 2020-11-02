@@ -114,6 +114,7 @@ class main_ui(object):
         
         self.window_stream_preview = IO.load_ui_file(os.path.join("ui", "stream_preview.ui")) 
         self.window_stream_preview.show()
+        self.window_stream_preview.setWindowTitle("IP Preview")
         valid = network.check_camera_ip(self.lineEdit_IP_address.text(),
                                 self.window_stream_preview.label_video_stream_preview)
         if(not valid):
