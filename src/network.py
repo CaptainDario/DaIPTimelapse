@@ -1,8 +1,9 @@
+import cv2
 import requests
 
 from PySide2.QtWidgets import QLabel
-from PySide2.QtGui import QPixmap
-from PySide2.QtCore import QByteArray
+from PySide2.QtGui import QPixmap, QImage
+from PySide2.QtCore import QByteArray, Qt 
 
 
 def check_camera_ip(ipaddr : str, label : QLabel):
@@ -22,25 +23,21 @@ def check_camera_ip(ipaddr : str, label : QLabel):
 
     valid = False
 
-    try:
-        w = label.width()
-        #download image
-        img = requests.get(ipaddr, stream=True)
+    lw = label.width()
+    #connect to stream
+    cap = cv2.VideoCapture(ipaddr)
 
-        if(img.status_code == 200):
-            #decode and transform download
-            img.raw.decode_content = True
-            label_pixmap = QPixmap()
-            label_pixmap.loadFromData(QByteArray(img.raw.data))
-            if(label_pixmap is not None):
-                #apply the image to the label
-                label.setPixmap(label_pixmap.scaledToWidth(w))
-            else:
-                print("An unexpected error appeared during image downloading/conversion!")
-                print("Please check that the IP-camera is returning a valid image and the URL is set correctly.")
+    ret, frame = cap.read()
+    if(ret):
+        #process image
+        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        h, w, ch = rgbImage.shape
+        bytesPerLine = ch * w
+        #convert to fit into label
+        convertToQtFormat = QImage(rgbImage.data, w, h, bytesPerLine, QImage.Format_RGB888)
+        p = convertToQtFormat.scaled(lw, 480, Qt.KeepAspectRatio)
+        label.setPixmap(QPixmap(p))
+
         valid = True
-    except:
-        label.setText("An unexpected error appeared during image downloading/conversion!")
-        valid = False
 
     return valid

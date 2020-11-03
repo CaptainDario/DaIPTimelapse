@@ -85,7 +85,7 @@
          <string>The ip address to take images from.</string>
         </property>
         <property name="text">
-         <string>http://192.168.178.60:8080/webcam/?action=stream</string>
+         <string>http://192.168.178.60:8080/?action=stream</string>
         </property>
         <property name="placeholderText">
          <string>IP-address...</string>

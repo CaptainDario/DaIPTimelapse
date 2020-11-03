@@ -2,8 +2,7 @@
 import requests 
 import shutil
 import os
-import threading
-import imageio
+import cv2
 #PySide2
 from PySide2.QtWidgets import QLabel, QMessageBox
 from PySide2.QtGui import QPixmap
@@ -113,12 +112,15 @@ class timelapse(object):
                                         "Please check that the IP-camera is returning a valid image and the URL is set correctly."))
         #save image to the time lapse path
         if(valid):
-            img = requests.get(self.url, stream=True)
-            img.raw.decode_content = True
-            #save image to file
-            with open(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), 'wb') as f:
-                f.write(img.raw.data)
-            self.pictures_taken += 1
+            #connect to stream
+            cap = cv2.VideoCapture(self.url)
+
+            ret, frame = cap.read()
+            if(ret):
+                #process and save image
+                rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), rgbImage)
+                self.pictures_taken += 1
         
         #reset the timer until the next image will be taken
         self.timer_current_value = self.capture_timeframe
@@ -132,17 +134,17 @@ class timelapse(object):
 
         img_dir = os.path.join(self.path, self.name, "images")
 
-        #read all frames from the folder
-        images = [img for img in os.listdir(img_dir) if img.endswith(".jpg")]
-        print(images)
-        
-        writer = imageio.get_writer(os.path.join(self.path, self.name, "test.mp4"), format='mp4', mode="I", fps=15)
-        
-        for img in images:
-            r_img = imageio.imread(os.path.join(img_dir, img))
-            
-            writer.append_data(r_img)
+        #read all frames (full path!) from the folder
+        images = [os.path.join(img_dir, img) for img in os.listdir(img_dir) if img.endswith(".jpg")]
 
-        writer.close()
+        #get the dim of the video
+        h, w, ch = cv2.imread(images[0]).shape
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+        video = cv2.VideoWriter(os.path.join(self.path, self.name, self.name + ".mp4"), fourcc, 1, (w, h))
+
+        for img in images:
+            video.write(cv2.imread(img))
+
+        video.release()
 
 
