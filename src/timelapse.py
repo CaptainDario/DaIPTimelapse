@@ -3,6 +3,7 @@ import requests
 import shutil
 import os
 import threading
+import imageio
 #PySide2
 from PySide2.QtWidgets import QLabel, QMessageBox
 from PySide2.QtGui import QPixmap
@@ -14,33 +15,38 @@ import network
 
 
 class timelapse(object):
+    '''
+    Saves all values of a timelapse.
+    Also manages the ui for this specific timelapse.
 
-
-    #the time until the next frame will be captured
-    capture_timeframe = 0
-    #the url of the camera stream where the still should be extracted from
-    url = ""
-    #the path were the image should be saved at
-    path = ""
-    #a user defined name for the current time lapse
-    name = ""
-    #how many images were already taken
-    pictures_taken = 0
-    #timer to get an image every x-seconds
-    timer_take_image = None
-    #timer to increase the progressbar every second
-    timer_progressbar = None
+    Attributes:
+        capture_timeframe    (int) : the time until the next frame will be captured.
+        url                  (str) : the url of the camera stream where the still should be extracted from
+        path                 (str) : the path were the image should be saved at
+        name                 (str) : a user defined name for the current time lapse
+        pictures_taken       (int) : how many images were already taken
+        timer_take_image  (QTimer) : timer to get an image every x-seconds
+        timer_progressbar (QTimer) : timer to increase the progressbar every second
+        window_timelapse (QWindow) : the ui window for the current time lapse
+    '''
 
 
     def __init__(self, url : str, path : str, name : str, capture_timeframe : int):
 
+        #instance members
         self.url  = url
         self.path = path
         self.name = name
-        self.capture_timeframe      = capture_timeframe
-        
-        #open ui window
+        self.capture_timeframe = capture_timeframe
+        self.pictures_taken = 0
+        self.timer_take_image = QTimer()
+        self.timer_progressbar = QTimer()
         self.window_timelapse = IO.load_ui_file(os.path.join("ui", "timelapse.ui")) 
+
+        #connect ui and functions
+        self.connect_ui()
+
+        #open ui window
         self.window_timelapse.setWindowTitle(self.name)
         self.window_timelapse.show()
         #set the values to the ones the user has entered
@@ -56,7 +62,6 @@ class timelapse(object):
         self.timer_current_value = self.capture_timeframe
         self.window_timelapse.progressBar_timeTillNextImage.setRange(0, self.capture_timeframe)
         #self.window_timelapse.progressBar_timeTillNextImage.setText("Progress until next image")
-        self.timer_progressbar = QTimer()
         self.timer_progressbar.setInterval(1000)
         self.timer_progressbar.timeout.connect(self.increase_progressBar)
         self.timer_progressbar.start()
@@ -65,7 +70,6 @@ class timelapse(object):
         self.take_image()
 
         #start taking images
-        self.timer_take_image = QTimer()
         self.timer_take_image.setInterval(self.capture_timeframe * 1000)
         self.timer_take_image.timeout.connect(self.take_image)
         self.timer_take_image.start()
@@ -74,7 +78,7 @@ class timelapse(object):
         '''
         Connect the buttons of the timelapse-ui with their functions.
         '''
-        #FINISH BUTTON
+        self.window_timelapse.pushButton_finishTimelapse.clicked.connect(self.render_time_lapse)
         #REMOVE TIMELAPSE FROM TIMELAPSE ARRAY WHEN CLOSED
         pass
 
@@ -88,20 +92,18 @@ class timelapse(object):
 
     def increase_progressBar(self):
         '''
+        Show the time until the next image will be taken in the progressbar.
         '''
 
         self.timer_current_value -= 1
         self.window_timelapse.progressBar_timeTillNextImage.setValue(self.timer_current_value)
-        self.window_timelapse.progressBar_timeTillNextImage.setFormat("Next image will in %v s")
+        self.window_timelapse.progressBar_timeTillNextImage.setFormat("Next image in %v s")
 
 
     def take_image(self):
         """
         Downloads the current image from the given URL.
         Displays it in the "label_lastImageTaken"-label and saves it to the given path.
-
-        TODO:
-            Save the image to file
         """
 
         #download image from the given url 
@@ -109,11 +111,38 @@ class timelapse(object):
         if(not valid):
             QMessageBox.critical(None, "Error", ("An unexpected error appeared during image downloading/conversion! \n" + \
                                         "Please check that the IP-camera is returning a valid image and the URL is set correctly."))
-
-
+        #save image to the time lapse path
+        if(valid):
+            img = requests.get(self.url, stream=True)
+            img.raw.decode_content = True
+            #save image to file
+            with open(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), 'wb') as f:
+                f.write(img.raw.data)
+            self.pictures_taken += 1
+        
         #reset the timer until the next image will be taken
         self.timer_current_value = self.capture_timeframe
         self.window_timelapse.progressBar_timeTillNextImage.setValue(self.timer_current_value)
-
         self.window_timelapse.progressBar_timeTillNextImage.setFormat("Next image in %v s")
-    
+
+    def render_time_lapse(self):
+        '''
+        Render a time lapse from all images taken from the time lapse.
+        '''
+
+        img_dir = os.path.join(self.path, self.name, "images")
+
+        #read all frames from the folder
+        images = [img for img in os.listdir(img_dir) if img.endswith(".jpg")]
+        print(images)
+        
+        writer = imageio.get_writer(os.path.join(self.path, self.name, "test.mp4"), format='mp4', mode="I", fps=15)
+        
+        for img in images:
+            r_img = imageio.imread(os.path.join(img_dir, img))
+            
+            writer.append_data(r_img)
+
+        writer.close()
+
+
