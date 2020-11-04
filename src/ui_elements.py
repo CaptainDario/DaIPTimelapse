@@ -2,7 +2,7 @@
 import os
 import re
 #PySide
-from PySide2.QtWidgets import QToolButton, QMainWindow, QLabel,\
+from PySide2.QtWidgets import QCheckBox, QToolButton, QMainWindow, QLabel,\
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
                                 QMessageBox
 from PySide2.QtGui import QIcon, QPixmap
@@ -24,15 +24,12 @@ class main_ui(object):
     lineEdit_name                   = None
 
     spinBox_time_till_next_image    = None
+    spinBox_fps                     = None
 
-    label_video_stream              = None
-    label_last_image_taken          = None
-
-    pushButton_start_stop_timelapse = None 
+    pushButton_start_timelapse      = None 
+    checkBox_delete_images          = None
 
     window_stream_preview           = None
-
-    refresh_view_timer = None
 
     #an array of all timelapses which are currently running
     current_timelapses = []
@@ -51,7 +48,7 @@ class main_ui(object):
         '''
         Set the references to the ui elements read from the .ui file
         '''
-        self.lineEdit_IP_address          = self.window.findChild(QLineEdit, "lineEdit_IP_address")
+        self.lineEdit_IP_address          = self.window.findChild(QLineEdit,   "lineEdit_IP_address")
 
         self.lineEdit_timelapse_path      = self.window.findChild(QLineEdit,   "lineEdit_timelapse_path")
         self.toolButton_image_path        = self.window.findChild(QToolButton, "toolButton_timelapse_path")
@@ -59,10 +56,10 @@ class main_ui(object):
         self.lineEdit_name                = self.window.findChild(QLineEdit,   "lineEdit_name")
         
         self.spinBox_time_till_next_image = self.window.findChild(QSpinBox,    "spinBox_time_till_next_image")
+        self.spinBox_fps                  = self.window.findChild(QSpinBox,    "spinBox_fps")
 
-        self.label_last_image_taken       = self.window.findChild(QLabel,      "label_last_image_taken")
-
-        self.pushButton_start_stop_timelapse   = self.window.findChild(QPushButton, "pushButton_start_stop_timelapse")
+        self.checkBox_delete_images       = self.window.findChild(QCheckBox,   "checkBox_delete_images")
+        self.pushButton_start_timelapse   = self.window.findChild(QPushButton, "pushButton_start_timelapse")
 
     def set_icons(self):
         self.toolButton_image_path.setIcon(QIcon("img/folder_black.png"))
@@ -73,7 +70,7 @@ class main_ui(object):
         Connect the ui with their functions
         '''
         self.toolButton_image_path.clicked.connect(self.set_timelapse_dir)
-        self.pushButton_start_stop_timelapse.clicked.connect(self.start_timelapse)
+        self.pushButton_start_timelapse.clicked.connect(self.start_timelapse)
         self.window.findChild(QPushButton, "pushButton_preview").clicked.connect(self.show_ip_preview)
 
     
@@ -95,6 +92,9 @@ class main_ui(object):
         IP_addr = self.lineEdit_IP_address.text()
         path    = self.lineEdit_timelapse_path.text()
         name    = self.lineEdit_name.text()
+        spf     = self.spinBox_time_till_next_image.value()
+        fps     = self.spinBox_fps.value()
+        del_img = self.checkBox_delete_images.isChecked()
 
         #check if all values are entered 
         if(IP_addr == "" or path == "" or name == ""):
@@ -105,7 +105,7 @@ class main_ui(object):
             msgBox = QMessageBox.critical(None, "Error", ("The given path does not exists!"))
         else:
             self.current_timelapses.append(timelapse.timelapse(IP_addr, path, name,
-                                            self.spinBox_time_till_next_image.value()))
+                                            spf, fps, del_img))
 
     def show_ip_preview(self):
         '''
