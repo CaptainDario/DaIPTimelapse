@@ -14,6 +14,19 @@ import IO
 
 
 class main_ui(object):
+    """The main-UI of the IP-time-lapse-toll.
+
+    lineEdit_IP_address            (QLineEdit) : The LineEdit in which the user can enter the ip address of the IP-Camera.
+    lineEdit_timelapse_path        (QLineEdit) : LineEdit for the path to the timelapse.
+    toolButton_timelapse_path    (QToolButton) : ToolButton to select the path for the timelapse with a file dialog.
+    lineEdit_name                  (QLineEdit) : LineEdit to give the TimeLapse a name.
+    spinBox_time_till_next_image    (QSpinBox) : SpinBox to set the time when a new image from the ip stream should be grabbed.
+    spinBox_fps                     (QSpinBox) : SpinBox to set the target fps of the rendered video.
+    pushButton_start_timelapse   (QPushButton) : Button to start a timelapse with the given parameters.
+    checkBox_delete_images         (QCheckBox) : CheckBox If the images should be delted after a time lapse was rendered.
+    window_stream_preview             (QLabel) : The window which previews the IP camera stream.
+    current_timelapses           ([timelapse]) : List of the running timelapse(s).
+    """
     
     lineEdit_IP_address             = None
 
@@ -30,7 +43,7 @@ class main_ui(object):
 
     window_stream_preview           = None
 
-    #an array of all timelapses which are currently running
+    #an array of all timelapses which are currently running (static for all main_ui instances)
     current_timelapses = []
 
 
