@@ -1,6 +1,5 @@
 #default
 import os
-import re
 #PySide
 from PySide2.QtWidgets import QCheckBox, QToolButton, QMainWindow, \
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
@@ -116,8 +115,8 @@ class main_ui(object):
         elif(not os.path.isdir(path)):
             msgBox = QMessageBox.critical(None, "Error", ("The given path does not exists!"))
         else:
-            self.current_timelapses.append(timelapse.timelapse(IP_addr, path, name,
-                                            spf, fps, del_img))
+            tl = timelapse.timelapse(IP_addr, path, name, spf, fps, del_img)
+            self.current_timelapses.append(tl)
 
     def show_ip_preview(self):
         '''
