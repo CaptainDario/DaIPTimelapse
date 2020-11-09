@@ -52,6 +52,8 @@ class timelapse(object):
         #connect ui and functions
         self.connect_ui()
 
+        #disable the close/maximize button
+        self.window_timelapse.setWindowFlags(Qt.Window  | Qt.WindowTitleHint)
         #open ui window
         self.window_timelapse.setWindowTitle(self.name)
         self.window_timelapse.show()
@@ -82,8 +84,9 @@ class timelapse(object):
 
     def connect_ui(self):
         '''
-        Connect the buttons of the timelapse-ui with their functions.
+        Connect the ui of the timelapse-ui with their functions.
         '''
+        
         self.window_timelapse.pushButton_finishTimelapse.clicked.connect(self.render_time_lapse)
 
     def create_timelapse_folder(self):
@@ -156,7 +159,7 @@ class timelapse(object):
     def del_timelapse(self):
         """Delete this timelapse object so that the garbage collector can remove it.
         """
-
+        
         ui_elements.main_ui.current_timelapses.remove(self)
         self = None
 
