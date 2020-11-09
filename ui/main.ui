@@ -149,6 +149,9 @@
       </item>
       <item row="5" column="2">
        <widget class="QLabel" name="label_deleteImages">
+        <property name="toolTip">
+         <string>Should the images of the timelapse be deleted after rendering a video</string>
+        </property>
         <property name="text">
          <string>delete images</string>
         </property>
@@ -156,6 +159,9 @@
       </item>
       <item row="5" column="0">
        <widget class="QCheckBox" name="checkBox_delete_images">
+        <property name="toolTip">
+         <string>Should the images of the timelapse be deleted after rendering a video.</string>
+        </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
         </property>
