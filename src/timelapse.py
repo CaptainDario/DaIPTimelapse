@@ -145,14 +145,19 @@ class timelapse(object):
 
         video.release()
 
-
         if(self.del_img):
-            print("images should be delted here")
-            pass
+            shutil.rmtree(img_dir)
 
-        #REMOVE TIMELAPSE FROM TIMELAPSE ARRAY WHEN CLOSED
-        print("References should be removed here.")
-
+        #close the window
         self.window_timelapse.close()
+        #delete this timelapse
+        self.del_timelapse()
+
+    def del_timelapse(self):
+        """Delete this timelapse object so that the garbage collector can remove it.
+        """
+
+        ui_elements.main_ui.current_timelapses.remove(self)
+        self = None
 
 
