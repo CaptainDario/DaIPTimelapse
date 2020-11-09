@@ -3,15 +3,15 @@ import PySide2
 import requests 
 import shutil
 import os
+import shutil
 import cv2
 #PySide2
 from PySide2 import *
-from PySide2.QtWidgets import QLabel, QMessageBox
-from PySide2.QtGui import QPixmap
-from PySide2.QtCore import QByteArray, QTimer
+from PySide2.QtCore import QTimer, Qt
 #custom
 import IO
 import network
+import ui_elements
 
 
 

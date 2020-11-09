@@ -2,11 +2,10 @@
 import os
 import re
 #PySide
-from PySide2.QtWidgets import QCheckBox, QToolButton, QMainWindow, QLabel,\
+from PySide2.QtWidgets import QCheckBox, QToolButton, QMainWindow, \
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
                                 QMessageBox
-from PySide2.QtGui import QIcon, QPixmap
-from PySide2.QtCore import QByteArray, Qt, QTimer
+from PySide2.QtGui import QIcon
 #custom
 import timelapse
 import network
