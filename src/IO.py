@@ -8,9 +8,6 @@ from PySide2.QtGui import QIcon
 import ui_elements
 
 
-ui = None
-
-
 
 
 def load_ui_file(path : str):
@@ -40,7 +37,5 @@ def load_ui_file(path : str):
         print(loader.errorString())
         sys.exit(-1)
 
-    global ui
-    ui = ui_elements.ui(window)
 
     return window
