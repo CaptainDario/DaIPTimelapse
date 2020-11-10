@@ -9,7 +9,7 @@ from PySide2.QtCore import QTimer, Qt
 #custom
 import IO
 import network
-import ui_elements
+import main_ui 
 
 
 
@@ -45,7 +45,7 @@ class timelapse(object):
         self.pictures_taken    = 0
         self.timer_take_image  = QTimer()
         self.timer_progressbar = QTimer()
-        self.window_timelapse  = IO.load_ui_file(os.path.join("ui", "timelapse.ui")) 
+        self.window_timelapse  = IO.load_ui_file(IO.resource_path(os.path.join("ui", "timelapse.ui"))) 
 
         #connect ui and functions
         self.connect_ui()
@@ -158,7 +158,7 @@ class timelapse(object):
         """Delete this timelapse object so that the garbage collector can remove it.
         """
         
-        ui_elements.main_ui.current_timelapses.remove(self)
+        main_ui.main_ui.current_timelapses.remove(self)
         self = None
 
 

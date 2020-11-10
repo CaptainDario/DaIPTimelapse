@@ -73,7 +73,7 @@ class main_ui(object):
         self.pushButton_start_timelapse   = self.window.findChild(QPushButton, "pushButton_start_timelapse")
 
     def set_icons(self):
-        self.toolButton_image_path.setIcon(QIcon("img/folder_black.png"))
+        self.toolButton_image_path.setIcon(QIcon(IO.resource_path(os.path.join("img", "folder_black.png"))))
         
 
     def connect_ui(self):
@@ -123,7 +123,7 @@ class main_ui(object):
         Opens a new window and shows a preview of the camera stream.
         '''
         
-        self.window_stream_preview = IO.load_ui_file(os.path.join("ui", "stream_preview.ui")) 
+        self.window_stream_preview = IO.load_ui_file(IO.resource_path(os.path.join("ui", "stream_preview.ui")))
         self.window_stream_preview.show()
         self.window_stream_preview.setWindowTitle("IP Preview")
         valid = network.check_camera_ip(self.lineEdit_IP_address.text(),
