@@ -1,5 +1,4 @@
 import cv2
-import requests
 
 from PySide2.QtWidgets import QLabel
 from PySide2.QtGui import QPixmap, QImage
