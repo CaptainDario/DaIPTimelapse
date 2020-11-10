@@ -1,3 +1,3 @@
 
 name = "DaIPTimelapse"
-version = "v0.1"
+version = "0.3a"
