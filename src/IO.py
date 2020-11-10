@@ -1,11 +1,8 @@
 #default
-import os, sys
+import sys
 #PySide2
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtCore import QFile, QIODevice
-from PySide2.QtGui import QIcon
-#custom
-import ui_elements
 
 
 

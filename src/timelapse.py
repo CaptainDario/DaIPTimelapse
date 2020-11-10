@@ -1,6 +1,4 @@
 #default
-import PySide2
-import requests 
 import shutil
 import os
 import shutil
