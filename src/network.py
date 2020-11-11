@@ -1,8 +1,13 @@
 import cv2
+import requests
+import re
 
 from PySide2.QtWidgets import QLabel
 from PySide2.QtGui import QPixmap, QImage
-from PySide2.QtCore import QByteArray, Qt 
+from PySide2.QtCore import Qt
+
+import about
+
 
 
 def check_camera_ip(ipaddr : str, label : QLabel):
@@ -40,3 +45,33 @@ def check_camera_ip(ipaddr : str, label : QLabel):
         valid = True
 
     return valid
+
+def check_for_update():
+    """Checks if there is a newer version available at github then the one currently running.
+
+    Returns:
+        True if there is a new version and False otherwise.
+    """
+
+    new_version_av = False
+
+    print("You are running DaIPTimelapse v" + about.version)
+
+    newest_ver_req = requests.get(about.latest_release_api)
+    if(newest_ver_req.ok):
+        newst_ver = newest_ver_req.json()["tag_name"]
+        
+        new_version = re.search("\d+\.\d+", newst_ver)[0]
+
+        old, new = float(about.version), float(new_version)
+
+        if(old < new):
+            print("There is an update available!")
+            new_version_av = True
+        else:
+            print("This is the latest version available.")
+
+    else:
+        print("Could not connect to github server.")
+
+    return new_version_av
