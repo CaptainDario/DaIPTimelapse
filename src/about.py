@@ -3,7 +3,7 @@ name           = "DaIPTimelapse"
 version        = "0.1"
 release_suffix = "a"
 
-full_id = " ".join([name, "v" + version + release_suffix])
+full_id = name + "_v" + version + release_suffix
 
 #Github
 repo_url           = "https://github.com/CaptainDario/DaIPTimelapse"
