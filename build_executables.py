@@ -45,14 +45,14 @@ if __name__ == "__main__":
 
         icon = ""
 
-        name_folder = about.name+ "_v" + str(about.version) + "_folder"
-        name_file   = about.name+ "_v" + str(about.version) + "_file"
+        name_folder = str(about.full_id) + "_folder"
+        name_file   = str(about.full_id) + "_file"
 
         build_command_file = " ".join(["pyinstaller", data, path, "--name=" + name_file, "--clean", "--onefile", "--noconfirm", ".\src\main.py"])
         build_command_folder = " ".join(["pyinstaller", data, path, "--name=" + name_folder, "--clean", "--noconfirm", ".\src\main.py"])
     else:
         print("OS on which you are trying to build is not configured.")
-        print("Please add a build configuration and submit a pull request: https://github.com/CaptainDario/DaIPTimelapse/pulls")
+        print("Please add a build configuration and submit a pull request: " + about.pull_url)
     
     #print(build_command_file)
 
