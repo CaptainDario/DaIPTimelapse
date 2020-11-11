@@ -55,6 +55,7 @@ if __name__ == "__main__":
         print("Please add a build configuration and submit a pull request: " + about.pull_url)
     
     #print(build_command_file)
+    #print(build_command_folder)
 
     # --- build onefile-exe
     subprocess.call(activate_venv_cmd + " && " + build_command_file)
