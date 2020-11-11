@@ -1,10 +1,10 @@
 # DaIPTimelapse
 DaIPTimelapse is a simple tool to create timelapses from IP-Cameras. </br>
 It is easy to use and is able to capture multiple time lapses at once. </br>
-| | |
-|-|-|
-|![main UI](./docs/img/main_ui.JPG) | ![time lapse capture UI](./docs/img/capture_ui.JPG)|
-| | |
+ Create Time Lapse                  | Running Time Lapse
+------------------------------------|----
+![main UI](./docs/img/main_ui.JPG)  | ![time lapse capture UI](./docs/img/capture_ui.JPG)
+
 
 ## Quick Start
 First you need to download the [matching version](##Executables) of the tool from [here](https://github.com/CaptainDario/DaIPTimelapse/releases). </br>
