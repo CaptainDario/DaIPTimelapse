@@ -59,9 +59,9 @@ def check_for_update():
 
     newest_ver_req = requests.get(about.latest_release_api)
     if(newest_ver_req.ok):
-        newst_ver = newest_ver_req.json()["tag_name"]
+        newest_ver = newest_ver_req.json()["tag_name"]
         
-        new_version = re.search("\d+\.\d+", newst_ver)[0]
+        new_version = re.search("\d+\.\d+", newest_ver)[0]
 
         old, new = float(about.version), float(new_version)
 
