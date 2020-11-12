@@ -186,8 +186,33 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actiontest"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_current_UI"/>
+    <addaction name="actionReload_configs"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actiontest">
+   <property name="text">
+    <string>test</string>
+   </property>
+  </action>
+  <action name="actionSave_current_UI">
+   <property name="text">
+    <string>Save current UI</string>
+   </property>
+  </action>
+  <action name="actionReload_configs">
+   <property name="text">
+    <string>Reload configs</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
