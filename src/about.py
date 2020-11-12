@@ -1,6 +1,6 @@
 
 name           = "DaIPTimelapse"
-version        = "0.1"
+version        = "0.3"
 release_suffix = "a"
 
 full_id = name + "_v" + version + release_suffix
@@ -12,3 +12,6 @@ latest_release_url = "https://github.com/CaptainDario/DaIPTimelapse/releases/lat
 
 #Github API
 latest_release_api = "https://api.github.com/repos/CaptainDario/DaIPTimelapse/releases/latest"
+
+#Data file
+data_file_name = "config.txt"
