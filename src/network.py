@@ -59,10 +59,11 @@ def check_for_update():
 
     newest_ver_req = requests.get(about.latest_release_api)
     if(newest_ver_req.ok):
+        #get the version from github release
         newest_ver = newest_ver_req.json()["tag_name"]
-        
         new_version = re.search("\d+\.\d+", newest_ver)[0]
 
+        #compare
         old, new = float(about.version), float(new_version)
 
         if(old < new):
