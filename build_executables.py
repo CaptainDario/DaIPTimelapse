@@ -39,17 +39,19 @@ if __name__ == "__main__":
         data += "--add-data .\\ui;ui "
         data += "--add-data .\\styling;styling "
         data += "--add-data .\\src;src "
+
+        #add the whole PySide2 folder (huge size but pyinstaller does not find the correct libs)
         data += "--add-data .\\.venv\\Lib\\site-packages\\PySide2;PySide2"
 
         path = "--distpath=.\\build\\windows"
 
-        icon = ""
+        icon = "--icon .\\img\\icon.ico"
 
         name_folder = str(about.full_id) + "_folder"
         name_file   = str(about.full_id) + "_file"
 
-        build_command_file = " ".join(["pyinstaller", data, path, "--name=" + name_file, "--clean", "--onefile", "--noconfirm", ".\src\main.py"])
-        build_command_folder = " ".join(["pyinstaller", data, path, "--name=" + name_folder, "--clean", "--noconfirm", ".\src\main.py"])
+        build_command_file = " ".join(["pyinstaller", data, path, "--name=" + name_file, "--clean", "--onefile", icon, "--noconfirm", ".\src\main.py"])
+        build_command_folder = " ".join(["pyinstaller", data, path, "--name=" + name_folder, "--hidden-import PySide2", "--clean", icon, "--noconfirm", ".\src\main.py"])
     else:
         print("OS on which you are trying to build is not configured.")
         print("Please add a build configuration and submit a pull request: " + about.pull_url)
@@ -65,7 +67,6 @@ if __name__ == "__main__":
     shutil.rmtree(os.path.join("build", name_file))
 
     # --- build folder-exe
-    #print(".venv\\Scripts\\activate.bat &&" + build_command_folder)
     subprocess.call(activate_venv_cmd + " &&" + build_command_folder)
     #remove spec
     os.remove(name_folder + ".spec")
