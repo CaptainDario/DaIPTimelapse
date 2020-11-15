@@ -96,3 +96,36 @@ def save_ui(ui : main_ui):
         f.write(str(ui.spinBox_fps.value()) + "\n")
         f.write(str(ui.checkBox_delete_images.isChecked()) + "\n")
         f.write("#######\n")
+
+def load_time_lapse_configs() -> list[str]:
+    """Loads all saved configs
+
+    Returns:
+        A list which all configs.
+    """
+
+    configs = []
+
+    data_file = os.path.join(tempfile.gettempdir(), about.name, about.data_file_name)
+    print("loading configs from:", data_file)
+    
+    file_content = []
+
+    #read the file into an array
+    with open(data_file, "r") as f:
+        file_content = f.readlines()        
+
+    #find the lines in the array which begin a config (#######)
+    config_begun = False
+    for line in file_content:
+        if(line == "#######\n" and not config_begun):
+            config_begun = True
+            configs.append([])
+            continue
+        elif(line == "#######\n" and config_begun):
+            config_begun = False
+            continue
+        
+        configs[len(configs) - 1].append(line.replace("\n", ""))
+        
+    return configs 
