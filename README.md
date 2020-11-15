@@ -41,6 +41,9 @@ python ./src/main.py
 
 [Here](https://github.com/CaptainDario/DaIPTimelapse/projects/1) you can see the currently planned features for this project.
 
+You have an idea for a new feature?</br>
+Feel free to open an issue and ask for it. You can also implement it and open an pull request.
+
 ## Development notes
 
 For development Python 3.9 was used.
