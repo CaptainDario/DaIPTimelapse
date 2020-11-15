@@ -1,3 +1,5 @@
+<img src="./img/social_preview.png">
+
 # DaIPTimelapse
 DaIPTimelapse is a simple tool to create timelapses from IP-Cameras. </br>
 It is easy to use and is able to capture multiple time lapses at once. </br>
@@ -48,3 +50,4 @@ For development Python 3.9 was used.
 ## Credits
 The icons used are taken from the [Google Material Design Icons Set](https://material.io/resources/icons/). </br>
 The dark color scheme was kindly made public by [Alexander Huszagh](https://github.com/Alexhuszagh/BreezeStyleSheets) </br>
+[ATMOSPHERIC font](https://www.fontspace.com/a-atmospheric-font-f46808)
