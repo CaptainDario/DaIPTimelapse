@@ -47,6 +47,28 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+def create_data_file():
+    """Creates a file to store the UI-data in the temp-dir of the OS.
+
+    First checks if a temp-folder already exists.
+    If this is not the case a directory will be created with a file in it.
+    Otherwise checks if a "data.txt" exists in the directory and creates it
+    id necessary.
+    """
+
+    tempdir   = tempfile.gettempdir()
+    data_dir  = os.path.join(tempdir, about.name)
+
+    #check if the directory does not exists and create it if necessary
+    if(not os.path.exists(data_dir)):
+        os.makedirs(data_dir)
+    
+    data_file = os.path.join(data_dir, about.data_file_name)
+    
+    #check if the directory does not exists and create it if necessary
+    if(not os.path.exists(data_file)):
+        with open(data_file, "w+"): pass
+
 def save_ui(ui : main_ui):
     """Writes the ui values to the file in the tempdir.
 
