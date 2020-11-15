@@ -82,7 +82,23 @@ class main_ui(object):
         '''
         self.toolButton_image_path.clicked.connect(self.set_timelapse_dir)
         self.pushButton_start_timelapse.clicked.connect(self.start_timelapse)
-        self.window.findChild(QPushButton, "pushButton_preview").clicked.connect(self.show_ip_preview)
+    def set_loaded_ui_values(self, ui_values : list[str]):
+        """Sets the ui according to the given list of ui values.
+
+        Note:
+            The ui_values param is expected to be one of the arrays of the array
+            of values of IO.load_time_lapse_config
+
+        Args:
+            ui_values (list[str]): A list of ui values which will define the new UI states
+        """
+
+        self.window.lineEdit_name.setText(ui_values[0])
+        self.window.lineEdit_IP_address.setText(ui_values[1])
+        self.window.lineEdit_timelapse_path.setText(ui_values[2])
+        self.window.spinBox_time_till_next_image.setValue(int(ui_values[3]))
+        self.window.spinBox_fps.setValue(int(ui_values[4]))
+        self.window.checkBox_delete_images.setCheckState(Qt.CheckState(ui_values[5] == "True"))
 
     
     #--- Button functions ----
