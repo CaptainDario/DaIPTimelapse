@@ -1,10 +1,12 @@
 #default
 import os
+from functools import partial
 #PySide
-from PySide2.QtWidgets import QCheckBox, QToolButton, QMainWindow, \
+from PySide2.QtWidgets import QCheckBox, QMenu, QToolButton, QMainWindow, \
                                 QPushButton, QLineEdit, QSpinBox, QFileDialog,\
                                 QMessageBox
 from PySide2.QtGui import QIcon
+from PySide2.QtCore import Qt
 #custom
 import timelapse
 import network
@@ -15,18 +17,22 @@ import IO
 class main_ui(object):
     """The main-UI of the IP-time-lapse-toll.
 
-    lineEdit_IP_address            (QLineEdit) : The LineEdit in which the user can enter the ip address of the IP-Camera.
-    lineEdit_timelapse_path        (QLineEdit) : LineEdit for the path to the timelapse.
-    toolButton_timelapse_path    (QToolButton) : ToolButton to select the path for the timelapse with a file dialog.
-    lineEdit_name                  (QLineEdit) : LineEdit to give the TimeLapse a name.
-    spinBox_time_till_next_image    (QSpinBox) : SpinBox to set the time when a new image from the ip stream should be grabbed.
-    spinBox_fps                     (QSpinBox) : SpinBox to set the target fps of the rendered video.
-    pushButton_start_timelapse   (QPushButton) : Button to start a timelapse with the given parameters.
-    checkBox_delete_images         (QCheckBox) : CheckBox If the images should be delted after a time lapse was rendered.
-    window_stream_preview             (QLabel) : The window which previews the IP camera stream.
-    current_timelapses           ([timelapse]) : List of the running timelapse(s).
+    Attributes:
+        menuFile                           (QMenu) : The menu with the items to save and load configs.
+        lineEdit_IP_address            (QLineEdit) : The LineEdit in which the user can enter the ip address of the IP-Camera.
+        lineEdit_timelapse_path        (QLineEdit) : LineEdit for the path to the timelapse.
+        toolButton_timelapse_path    (QToolButton) : ToolButton to select the path for the timelapse with a file dialog.
+        lineEdit_name                  (QLineEdit) : LineEdit to give the TimeLapse a name.
+        spinBox_time_till_next_image    (QSpinBox) : SpinBox to set the time when a new image from the ip stream should be grabbed.
+        spinBox_fps                     (QSpinBox) : SpinBox to set the target fps of the rendered video.
+        pushButton_start_timelapse   (QPushButton) : Button to start a timelapse with the given parameters.
+        checkBox_delete_images         (QCheckBox) : CheckBox If the images should be delted after a time lapse was rendered.
+        window_stream_preview             (QLabel) : The window which previews the IP camera stream.
+        current_timelapses           ([timelapse]) : List of the running timelapse(s).
     """
     
+    menuFile                        = None
+
     lineEdit_IP_address             = None
 
     lineEdit_timelapse_path         = None
@@ -42,8 +48,8 @@ class main_ui(object):
 
     window_stream_preview           = None
 
-    #an array of all timelapses which are currently running (static for all main_ui instances)
     current_timelapses = []
+    loaded_configs     = []
 
 
     def __init__(self, window : QMainWindow):
@@ -53,12 +59,17 @@ class main_ui(object):
         self.set_important_ui_elements()
         self.set_icons()
         self.connect_ui()
+        #load the saved configurations and add them to the menubar
+        self.create_menu()
 
 
     def set_important_ui_elements(self):
         '''
         Set the references to the ui elements read from the .ui file
         '''
+
+        self.menuFile                     = self.window.findChild(QMenu, "menuFile")
+
         self.lineEdit_IP_address          = self.window.findChild(QLineEdit,   "lineEdit_IP_address")
 
         self.lineEdit_timelapse_path      = self.window.findChild(QLineEdit,   "lineEdit_timelapse_path")
@@ -74,7 +85,35 @@ class main_ui(object):
 
     def set_icons(self):
         self.toolButton_image_path.setIcon(QIcon(IO.resource_path(os.path.join("img", "folder_black.png"))))
+
+
+    def create_menu(self):
+        """Adds all QActions to the file menu from the menubar.
+        """
+
+        self.loaded_configs = IO.load_time_lapse_configs()
+        self.menuFile.clear()
+
+        #add the load and delete sub-menu
+        sub_load = self.menuFile.addMenu("Load config")
+        sub_del  = self.menuFile.addMenu("Delete config")
+
+        #load the stored configs and append them to the sub-menus
+        for c, name in enumerate(self.loaded_configs):
+            load_entry = sub_load.addAction(name[0])
+            load_entry.triggered.connect(partial(self.set_loaded_ui_values, name))
+
+            del_entry  = sub_del.addAction(name[0])
+            del_entry.triggered.connect(partial(IO.delete_config, c))
+
+        #add the reload and save action
+        self.menuFile.addSeparator()
+        save   = self.menuFile.addAction("Save current config")
+        reload = self.menuFile.addAction("Reload configs")
         
+        #connect the actions
+        save.triggered.connect(lambda : IO.save_ui(self))
+        reload.triggered.connect(self.create_menu)
 
     def connect_ui(self):
         '''
@@ -82,6 +121,8 @@ class main_ui(object):
         '''
         self.toolButton_image_path.clicked.connect(self.set_timelapse_dir)
         self.pushButton_start_timelapse.clicked.connect(self.start_timelapse)
+        self.window.pushButton_preview.clicked.connect(self.show_ip_preview)
+
     def set_loaded_ui_values(self, ui_values : list[str]):
         """Sets the ui according to the given list of ui values.
 
