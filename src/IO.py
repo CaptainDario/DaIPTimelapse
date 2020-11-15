@@ -47,3 +47,30 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+def save_ui(ui : main_ui):
+    """Writes the ui values to the file in the tempdir.
+
+    Write the data in the following format (ui-values from top to bottom):
+    #######
+    name
+    IP-addr
+    path
+    time till next image
+    fps
+    delete images
+    #######
+
+    Args:
+        ui : the main_ui instance to read the values from.
+    """
+
+    data_file = os.path.join(tempfile.gettempdir(), about.name, about.data_file_name)
+    with open(data_file, "a+") as f:
+        f.write("#######\n")
+        f.write(ui.lineEdit_name.text() + "\n")
+        f.write(ui.lineEdit_IP_address.text() + "\n")
+        f.write(ui.lineEdit_timelapse_path.text() + "\n")
+        f.write(str(ui.spinBox_time_till_next_image.value()) + "\n")
+        f.write(str(ui.spinBox_fps.value()) + "\n")
+        f.write(str(ui.checkBox_delete_images.isChecked()) + "\n")
+        f.write("#######\n")
