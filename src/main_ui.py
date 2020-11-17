@@ -178,6 +178,10 @@ class main_ui(object):
             msgBox = QMessageBox.critical(None, "Error", ("In the given path a folder called: '%s' already exists!" % name))
         elif(not os.path.isdir(path)):
             msgBox = QMessageBox.critical(None, "Error", ("The given path does not exists!"))
+        #check if an image can be downloaded from the IP address
+        elif(not network.check_camera_ip(IP_addr)):
+            QMessageBox.critical(None, "Error", ("An unexpected error appeared during image downloading/conversion! \n" + \
+                                        "Please check that the IP-camera is returning a valid image and the URL is set correctly."))
         else:
             tl = timelapse.timelapse(IP_addr, path, name, spf, fps, del_img)
             self.current_timelapses.append(tl)
@@ -190,7 +194,7 @@ class main_ui(object):
         self.window_stream_preview = IO.load_ui_file(IO.resource_path(os.path.join("ui", "stream_preview.ui")))
         self.window_stream_preview.show()
         self.window_stream_preview.setWindowTitle("IP Preview")
-        valid = network.check_camera_ip(self.lineEdit_IP_address.text(),
+        valid = network.check_camera_ip_ui(self.lineEdit_IP_address.text(),
                                 self.window_stream_preview.label_video_stream_preview)
         if(not valid):
             self.window_stream_preview.close()
