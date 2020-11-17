@@ -117,7 +117,7 @@ class timelapse(object):
         
         if(ret):
             #process and save image
-            rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            rgbImage = frame#cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             cv2.imwrite(os.path.join(self.path, self.name, "images", self.name + "_" + format(self.pictures_taken, '017d') + ".jpg"), rgbImage)
             self.pictures_taken += 1
         
@@ -143,7 +143,7 @@ class timelapse(object):
 
         #change the color space and render the video
         for img in images:
-            image = cv2.cvtColor(cv2.imread(img), cv2.COLOR_BGR2RGB)
+            image = cv2.imread(img)
             video.write(image)
 
         video.release()
