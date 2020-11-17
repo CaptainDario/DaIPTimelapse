@@ -16,8 +16,10 @@ import network
 
 def main():
     app = QApplication(sys.argv)
+    IO.create_data_file()
+
+    #apply style to the app
     app.setStyle("Fusion")
-    #load the dark style
     file = QFile(IO.resource_path(os.path.join("styling", "dark.qss")))
     file.open(QFile.ReadOnly | QFile.Text)
     stream = QTextStream(file)

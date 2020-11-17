@@ -1,9 +1,16 @@
 #default
+from os import name
 import sys
 import os
+import tempfile
 #PySide2
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtCore import QFile, QIODevice
+from cv2 import data
+#custom
+import about
+from main import main
+from main_ui import main_ui
 
 
 
@@ -47,3 +54,110 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
+def create_data_file():
+    """Creates a file to store the UI-data in the temp-dir of the OS.
+
+    First checks if a temp-folder already exists.
+    If this is not the case a directory will be created with a file in it.
+    Otherwise checks if a "data.txt" exists in the directory and creates it
+    id necessary.
+    """
+
+    tempdir   = tempfile.gettempdir()
+    data_dir  = os.path.join(tempdir, about.name)
+
+    #check if the directory does not exists and create it if necessary
+    if(not os.path.exists(data_dir)):
+        os.makedirs(data_dir)
+    
+    data_file = os.path.join(data_dir, about.data_file_name)
+    
+    #check if the directory does not exists and create it if necessary
+    if(not os.path.exists(data_file)):
+        with open(data_file, "w+"): pass
+
+def save_ui(name : str, IP : str, path : str, spf : str, fps : str, del_img : str):
+    """Writes the ui values to the file in the tempdir.
+
+    Write the data in the following format (ui-values from top to bottom):
+    #######
+    name
+    IP-addr
+    path
+    time till next image
+    fps
+    delete images
+    #######
+
+    Args:
+        ui : the main_ui instance to read the values from.
+    """
+
+    data_file = os.path.join(tempfile.gettempdir(), about.name, about.data_file_name)
+    with open(data_file, "a+") as f:
+        f.write("#######\n")
+        f.write(name + "\n")
+        f.write(IP + "\n")
+        f.write(path + "\n")
+        f.write(spf + "\n")
+        f.write(fps + "\n")
+        f.write(del_img + "\n")
+        f.write("#######\n")
+
+def load_time_lapse_configs() -> list[str]:
+    """Loads all saved configs
+
+    Returns:
+        A list which all configs.
+    """
+
+    configs = []
+
+    data_file = os.path.join(tempfile.gettempdir(), about.name, about.data_file_name)
+    print("loading configs from:", data_file)
+    
+    file_content = []
+
+    #read the file into an array
+    with open(data_file, "r") as f:
+        file_content = f.readlines()        
+
+    #find the lines in the array which begin a config (#######)
+    config_begun = False
+    for line in file_content:
+        if(line == "#######\n" and not config_begun):
+            config_begun = True
+            configs.append([])
+            continue
+        elif(line == "#######\n" and config_begun):
+            config_begun = False
+            continue
+        
+        configs[len(configs) - 1].append(line.replace("\n", ""))
+        
+    return configs 
+
+
+def delete_config(configs : list[str], config_nr : int):
+    """Removes the given config from the saved configs.
+
+    First deletes the config_nr from configs.
+    Than empties the config file and finally writes all other configs back to the file.
+
+    Args:
+        configs (list[str]) : A list with all ui params. (name, IP, path, spf, fps, delete_imgs).
+        config_nr     (int) : The index of the configuration which should be deleted from the configurations.
+    """
+
+    #remove the config which should be deleted
+    configs.pop(config_nr)
+    #empty file
+    open(os.path.join(tempfile.gettempdir(), about.name, about.data_file_name), 'w').close()
+
+    #write the other configs back to file
+    for config in configs:
+        save_ui(config[0], config[1], config[2],
+                config[3], config[4], config[5])
+
+

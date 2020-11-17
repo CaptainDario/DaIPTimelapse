@@ -113,8 +113,8 @@ class timelapse(object):
 
         #download image from the given url 
         valid = network.check_camera_ip(self.url, self.window_timelapse.label_lastImageTaken)
-        #save image to the time lapse path
         ret, frame = self.ipstream.read()
+        
         if(ret):
             #process and save image
             rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -138,14 +138,17 @@ class timelapse(object):
 
         #get the dim of the video
         h, w, ch = cv2.imread(images[0]).shape
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         video = cv2.VideoWriter(os.path.join(self.path, self.name, self.name + ".mp4"), fourcc, self.fps, (w, h))
 
+        #change the color space and render the video
         for img in images:
-            video.write(cv2.imread(img))
+            image = cv2.cvtColor(cv2.imread(img), cv2.COLOR_BGR2RGB)
+            video.write(image)
 
         video.release()
 
+        #delete the folder with the images if user checked the box
         if(self.del_img):
             shutil.rmtree(img_dir)
 

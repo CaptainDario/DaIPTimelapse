@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>846</width>
-    <height>289</height>
+    <width>727</width>
+    <height>316</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>12</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
@@ -17,6 +23,12 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="4" column="0">
      <widget class="QPushButton" name="pushButton_start_timelapse">
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
       <property name="text">
        <string>Start Timelapse</string>
       </property>
@@ -24,27 +36,30 @@
     </item>
     <item row="0" column="0" rowspan="3">
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="3" column="0">
-       <widget class="QSpinBox" name="spinBox_time_till_next_image">
+      <item row="2" column="2">
+       <widget class="QToolButton" name="toolButton_timelapse_path">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
-         <string>The seconds until a new image will be taken (seconds per frame).</string>
+         <string>Select path in a file browser.</string>
         </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>999999999</number>
-        </property>
-        <property name="singleStep">
-         <number>1</number>
-        </property>
-        <property name="value">
-         <number>10</number>
+        <property name="text">
+         <string>...</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
+      <item row="4" column="2">
        <widget class="QLabel" name="label_time_till_next_image">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
          <string>The seconds until a new image will be taken (seconds per frame).</string>
         </property>
@@ -53,18 +68,14 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="label_targetFPS">
-        <property name="toolTip">
-         <string>The fps of the rendered video.</string>
-        </property>
-        <property name="text">
-         <string>target fps</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
+      <item row="1" column="2">
        <widget class="QPushButton" name="pushButton_preview">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
          <string>Preview the curent ip.</string>
         </property>
@@ -73,56 +84,30 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLineEdit" name="lineEdit_IP_address">
+      <item row="6" column="2">
+       <widget class="QLabel" name="label_deleteImages">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
-         <string>The ip address to take images from.</string>
+         <string>Should the images of the timelapse be deleted after rendering a video</string>
         </property>
         <property name="text">
-         <string>http://192.168.178.60:8080/?action=stream</string>
-        </property>
-        <property name="placeholderText">
-         <string>IP-address...</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
+         <string>delete images</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLineEdit" name="lineEdit_name">
-        <property name="toolTip">
-         <string>The name of this timelapse.</string>
-        </property>
-        <property name="text">
-         <string>DaIPTimelapse</string>
-        </property>
-        <property name="placeholderText">
-         <string>name...</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="lineEdit_timelapse_path">
-        <property name="toolTip">
-         <string>The path where the time lapse should be saved.</string>
-        </property>
-        <property name="text">
-         <string>D:\IP_timelapses</string>
-        </property>
-        <property name="placeholderText">
-         <string>timelapse path...</string>
-        </property>
-        <property name="clearButtonEnabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
+      <item row="5" column="0">
        <widget class="QSpinBox" name="spinBox_fps">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
          <string>The fps of the rendered video.</string>
         </property>
@@ -137,28 +122,14 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QToolButton" name="toolButton_timelapse_path">
-        <property name="toolTip">
-         <string>Select path in a file browser.</string>
-        </property>
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="label_deleteImages">
-        <property name="toolTip">
-         <string>Should the images of the timelapse be deleted after rendering a video</string>
-        </property>
-        <property name="text">
-         <string>delete images</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
+      <item row="6" column="0">
        <widget class="QCheckBox" name="checkBox_delete_images">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="toolTip">
          <string>Should the images of the timelapse be deleted after rendering a video.</string>
         </property>
@@ -173,6 +144,113 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="label_targetFPS">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>The fps of the rendered video.</string>
+        </property>
+        <property name="text">
+         <string>target fps</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lineEdit_IP_address">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>The ip address to take images from.</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>IP-address...</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lineEdit_timelapse_path">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>The path where the time lapse should be saved.</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>timelapse path...</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QSpinBox" name="spinBox_time_till_next_image">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>The seconds until a new image will be taken (seconds per frame).</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+        <property name="singleStep">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="lineEdit_name">
+        <property name="font">
+         <font>
+          <family>Segoe UI</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>The name of this timelapse.</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="placeholderText">
+         <string>name...</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
    </layout>
@@ -182,12 +260,88 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>846</width>
+     <width>727</width>
      <height>26</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>9</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuLoad">
+     <property name="font">
+      <font>
+       <family>Segoe UI</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="title">
+      <string>Load</string>
+     </property>
+     <addaction name="actiontest_2"/>
+    </widget>
+    <addaction name="menuLoad"/>
+    <addaction name="actionDelete"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave_current_UI"/>
+    <addaction name="actionReload_configs"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSave_current_UI">
+   <property name="text">
+    <string>Save current config</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionReload_configs">
+   <property name="text">
+    <string>Reload configs</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actiontest_2">
+   <property name="text">
+    <string>test</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete config</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
