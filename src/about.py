@@ -1,7 +1,7 @@
 
 name           = "DaIPTimelapse"
 version        = "0.3"
-release_suffix = "a"
+release_suffix = "b"
 
 full_id = name + "_v" + version + release_suffix
 
