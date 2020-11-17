@@ -6,6 +6,7 @@ import cv2
 #PySide2
 from PySide2 import *
 from PySide2.QtCore import QTimer, Qt
+from PySide2.QtGui import QIcon
 #custom
 import IO
 import network
@@ -46,6 +47,9 @@ class timelapse(object):
         self.timer_take_image  = QTimer()
         self.timer_progressbar = QTimer()
         self.window_timelapse  = IO.load_ui_file(IO.resource_path(os.path.join("ui", "timelapse.ui"))) 
+        
+        #load icon
+        self.window_timelapse.setWindowIcon(QIcon("img/icon.ico"))
 
         #connect ui and functions
         self.connect_ui()

@@ -1,9 +1,9 @@
 #standard
 import os, sys
 import webbrowser
-from PySide2.QtCore import QFile, QTextStream
 #PySide2
-from PySide2.QtWidgets import QApplication, QMainWindow
+from PySide2.QtWidgets import QApplication
+from PySide2.QtCore import QFile, QTextStream
 #custom
 import IO
 from main_ui import main_ui 
