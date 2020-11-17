@@ -69,7 +69,7 @@ def create_data_file():
     if(not os.path.exists(data_file)):
         with open(data_file, "w+"): pass
 
-def save_ui(ui : main_ui):
+def save_ui(name : str, IP : str, path : str, spf : str, fps : str, del_img : str):
     """Writes the ui values to the file in the tempdir.
 
     Write the data in the following format (ui-values from top to bottom):
@@ -89,12 +89,12 @@ def save_ui(ui : main_ui):
     data_file = os.path.join(tempfile.gettempdir(), about.name, about.data_file_name)
     with open(data_file, "a+") as f:
         f.write("#######\n")
-        f.write(ui.lineEdit_name.text() + "\n")
-        f.write(ui.lineEdit_IP_address.text() + "\n")
-        f.write(ui.lineEdit_timelapse_path.text() + "\n")
-        f.write(str(ui.spinBox_time_till_next_image.value()) + "\n")
-        f.write(str(ui.spinBox_fps.value()) + "\n")
-        f.write(str(ui.checkBox_delete_images.isChecked()) + "\n")
+        f.write(name + "\n")
+        f.write(IP + "\n")
+        f.write(path + "\n")
+        f.write(spf + "\n")
+        f.write(fps + "\n")
+        f.write(del_img + "\n")
         f.write("#######\n")
 
 def load_time_lapse_configs() -> list[str]:
