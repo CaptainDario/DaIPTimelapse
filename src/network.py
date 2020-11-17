@@ -10,15 +10,14 @@ import about
 
 
 
-def check_camera_ip(ipaddr : str, label : QLabel):
+def check_camera_ip_ui(ipaddr : str, label : QLabel):
     '''
     Checks if the given String is a valid ip-address which leads to a camera-/image-stream.
     If that is the case the downloaded image will be applied to the given label.
-    Otherwise an error message will be written.
 
     Args:
-        ipaddr : 
-        label
+        ipaddr   (str) : The ipaddr which should be tested.
+        label (QLabel) : The QLabel which should display the downloaded image.
 
     Returns:
         True, if an image was successfully downloaded and applied to the label.
