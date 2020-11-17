@@ -104,7 +104,8 @@ class main_ui(object):
             load_entry.triggered.connect(partial(self.set_loaded_ui_values, name))
 
             del_entry  = sub_del.addAction(name[0])
-            del_entry.triggered.connect(partial(IO.delete_config, c))
+            del_entry.triggered.connect(partial(IO.delete_config, self.loaded_configs, c))
+            del_entry.triggered.connect(self.create_menu)
 
         #add the reload and save action
         self.menuFile.addSeparator()
@@ -112,7 +113,13 @@ class main_ui(object):
         reload = self.menuFile.addAction("Reload configs")
         
         #connect the actions
-        save.triggered.connect(lambda : IO.save_ui(self))
+        save.triggered.connect(lambda : IO.save_ui(self.window.lineEdit_name.text(),
+                                                    self.window.lineEdit_IP_address.text(),
+                                                    self.window.lineEdit_timelapse_path.text(),
+                                                    str(self.window.spinBox_time_till_next_image.value()),
+                                                    str(self.window.spinBox_fps.value()),
+                                                    str(self.window.checkBox_delete_images.isChecked())))
+        save.triggered.connect(self.create_menu)
         reload.triggered.connect(self.create_menu)
 
     def connect_ui(self):
