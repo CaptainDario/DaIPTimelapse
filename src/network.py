@@ -45,6 +45,27 @@ def check_camera_ip_ui(ipaddr : str, label : QLabel):
 
     return valid
 
+def check_camera_ip(ipaddr : str):
+    """Checks if the given String is a valid ip-address which leads to a camera-/image-stream.
+
+    Args:
+        ipaddr   (str) : The ipaddr which should be tested.
+
+    Returns:
+        True, if an image was successfully downloaded and applied to the label.
+        False otherwise.
+    """
+    valid = False
+
+    #connect to stream
+    cap = cv2.VideoCapture(ipaddr)
+
+    ret, frame = cap.read()
+    if(ret):
+        valid = True
+
+    return valid
+
 def check_for_update():
     """Checks if there is a newer version available at github then the one currently running.
 
