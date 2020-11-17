@@ -56,7 +56,7 @@ class main_ui(object):
 
         self.window = window
         print(os.getcwd())
-        window.setWindowIcon(QIcon("img/icon.ico"))
+        window.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
         
         self.set_important_ui_elements()
         self.set_icons()
@@ -179,21 +179,22 @@ class main_ui(object):
                                 "Error",
                                 "Not all necessary parameters were set!",
                            buttons=QMessageBox.Ok)
-            msgb.setWindowIcon(QIcon("img/icon.ico"))
+            msgb.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
             msgb.exec()
         elif(os.path.exists(os.path.join(path, name))):
             msgb = QMessageBox(QMessageBox.Critical,
                                 "Error",
                                 ("In the given path a folder called: '%s' already exists!" % name),
                            buttons=QMessageBox.Ok)
-            msgb.setWindowIcon(QIcon("img/icon.ico"))
+            msgb.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
             msgb.exec()
+        #check if path is valid
         elif(not os.path.isdir(path)):
             msgb = QMessageBox(QMessageBox.Critical,
                                 "Error",
                                 ("The given path does not exists!"),
                            buttons=QMessageBox.Ok)
-            msgb.setWindowIcon(QIcon("img/icon.ico"))
+            msgb.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
             msgb.exec()
         #check if an image can be downloaded from the IP address
         elif(not network.check_camera_ip(IP_addr)):
@@ -202,7 +203,7 @@ class main_ui(object):
                                 "An unexpected error appeared during image downloading and conversion! \n" + \
                                 "Please check that the IP-camera is returning a valid image and the URL is set correctly.",
                            buttons=QMessageBox.Ok)
-            msgb.setWindowIcon(QIcon("img/icon.ico"))
+            msgb.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
             msgb.exec()
         else:
             tl = timelapse.timelapse(IP_addr, path, name, spf, fps, del_img)
@@ -216,7 +217,7 @@ class main_ui(object):
         self.window_stream_preview = IO.load_ui_file(IO.resource_path(os.path.join("ui", "stream_preview.ui")))
         self.window_stream_preview.show()
         self.window_stream_preview.setWindowTitle("IP Preview")
-        self.window_stream_preview.setWindowIcon(QIcon("img/icon.ico"))
+        self.window_stream_preview.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
         valid = network.check_camera_ip_ui(self.lineEdit_IP_address.text(),
                                 self.window_stream_preview.label_video_stream_preview)
         if(not valid):
@@ -226,5 +227,5 @@ class main_ui(object):
                                 "An unexpected error appeared during image downloading and conversion! \n" + \
                                 "Please check that the IP-camera is returning a valid image and the URL is set correctly.",
                            buttons=QMessageBox.Ok)
-            msgb.setWindowIcon(QIcon("img/icon.ico"))
+            msgb.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
             msgb.exec()

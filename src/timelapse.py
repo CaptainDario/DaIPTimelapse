@@ -49,7 +49,7 @@ class timelapse(object):
         self.window_timelapse  = IO.load_ui_file(IO.resource_path(os.path.join("ui", "timelapse.ui"))) 
         
         #load icon
-        self.window_timelapse.setWindowIcon(QIcon("img/icon.ico"))
+        self.window_timelapse.setWindowIcon(QIcon(IO.resource_path("img/icon.ico")))
 
         #connect ui and functions
         self.connect_ui()
