@@ -1,9 +1,16 @@
 #default
+from os import name
 import sys
 import os
+import tempfile
 #PySide2
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtCore import QFile, QIODevice
+from cv2 import data
+#custom
+import about
+from main import main
+from main_ui import main_ui
 
 
 
@@ -47,6 +54,7 @@ def resource_path(relative_path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, relative_path)
+
 def create_data_file():
     """Creates a file to store the UI-data in the temp-dir of the OS.
 
@@ -129,3 +137,27 @@ def load_time_lapse_configs() -> list[str]:
         configs[len(configs) - 1].append(line.replace("\n", ""))
         
     return configs 
+
+
+def delete_config(configs : list[str], config_nr : int):
+    """Removes the given config from the saved configs.
+
+    First deletes the config_nr from configs.
+    Than empties the config file and finally writes all other configs back to the file.
+
+    Args:
+        configs (list[str]) : A list with all ui params. (name, IP, path, spf, fps, delete_imgs).
+        config_nr     (int) : The index of the configuration which should be deleted from the configurations.
+    """
+
+    #remove the config which should be deleted
+    configs.pop(config_nr)
+    #empty file
+    open(os.path.join(tempfile.gettempdir(), about.name, about.data_file_name), 'w').close()
+
+    #write the other configs back to file
+    for config in configs:
+        save_ui(config[0], config[1], config[2],
+                config[3], config[4], config[5])
+
+
