@@ -112,7 +112,7 @@ class timelapse(object):
         """
 
         #download image from the given url 
-        valid = network.check_camera_ip(self.url, self.window_timelapse.label_lastImageTaken)
+        valid = network.check_camera_ip_ui(self.url, self.window_timelapse.label_lastImageTaken)
         ret, frame = self.ipstream.read()
         
         if(ret):
