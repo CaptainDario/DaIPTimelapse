@@ -113,8 +113,8 @@ class timelapse(object):
 
         #download image from the given url 
         valid = network.check_camera_ip(self.url, self.window_timelapse.label_lastImageTaken)
-        #save image to the time lapse path
         ret, frame = self.ipstream.read()
+        
         if(ret):
             #process and save image
             rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
