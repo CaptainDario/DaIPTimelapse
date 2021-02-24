@@ -9,7 +9,7 @@ It is easy to use and is able to capture multiple time lapses at once. </br>
 
 
 ## Quick Start
-First you need to download the [matching version](##Executables) of the tool from [here](https://github.com/CaptainDario/DaIPTimelapse/releases). </br>
+You only need to download the [matching version](##Executables) of the tool from [here](https://github.com/CaptainDario/DaIPTimelapse/releases). </br>
 Now you are ready to start capturing some time lapses.</br>
 
 ## Executables
